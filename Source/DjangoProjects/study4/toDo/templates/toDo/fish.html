@@ -1,0 +1,82 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html class="ocks-org do-not-copy">
+  <meta charset="utf-8">
+  <title>Fisheye Distortion</title>
+  <style>
+
+  @import url(http://bost.ocks.org/mike/style.css?aea6f0a);
+
+  #chart1 {
+    width: 960px;
+    height: 500px;
+    border: solid 1px #ccc;
+  }
+
+  text {
+    font: 10px sans-serif;
+  }
+
+  .background {
+    fill: none;
+    pointer-events: all;
+  }
+
+  #chart1 .node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  #chart1 .link {
+    stroke: #999;
+    stroke-opacity: .6;
+    stroke-width: 1.5px;
+  }
+
+  #chart2, #chart3 {
+    width: 960px;
+    height: 180px;
+    border: solid 1px #ccc;
+  }
+
+  #chart2 path, #chart3 line {
+    fill: none;
+    stroke: #333;
+  }
+
+  #chart3 line {
+    shape-rendering: crispEdges;
+  }
+
+  #chart4 {
+    margin-left: -40px;
+    height: 506px;
+  }
+
+  #chart4 .background {
+    fill: #ddd;
+  }
+
+  #chart4 .dot {
+    stroke: #000;
+  }
+
+  .axis path, .axis line {
+    fill: none;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+  }
+
+  </style> 
+  <body>
+        <div id="mousePopUp" style="position:absolute;display:none;border:2px black dotted;">hello</div>
+        <p id="chart1"></p>    
+  </body>
+  
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="http://d3js.org/d3.v2.min.js?2.9.4"></script>
+<script src="{% static 'js/fisheye.js' %}"></script>
+<script src="{% static 'js/d3load.js' %}"></script>
+     
+     
+

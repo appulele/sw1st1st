@@ -1,0 +1,55 @@
+{% load staticfiles %}
+!!! 5
+html(lang="kr" , ng-app="todoApp")
+    head
+        title TODO List
+        script(src!='{% static 'js/angular.js' %}')
+        link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css", rel='stylesheet')   
+        script(src!='{% static 'js/django-angular.js' %}') 
+        link(href="{% static 'css/fisheye.css' %}", rel='stylesheet')   
+         
+
+            
+        
+        
+            
+
+        
+    body(ng-controller="ToDoCtrl")
+        div.page-header
+            h1 [[ todo.user ]]`s TODO List
+                span.label.label-default(ng-hide="incomplimentCount()===0" ng-class="warningLevel()")
+                    [[ incomplimentCount() ]]
+
+        div.panel
+            div.input-group
+                input.form-control(ng-model="actionText")
+                span.input-group-btn
+                    button.btn.btn-default(ng-click="addNewItem(actionText)") 추가
+            table.table.table-striped
+                thread 
+                    tr 
+                        th 설명
+                        th 수행결과
+                tbody
+                    //- tr(ng-repeat="item in todo.items | filter:{done:false} | orderBy:'action'")
+                    tr(ng-repeat="item in todo.items")
+                        td [[ item.action ]]
+                        td: input(type="checkbox" ng-model="item.done")
+                        td [[ item.done ]]
+
+
+        div
+            //- p#chart1
+        div
+             
+
+                 
+ 
+
+
+
+    |<script src="http://d3js.org/d3.v2.min.js?2.9.4"></script>
+    script(src!='{% static 'js/fisheye.js' %}') 
+    script(src!='{% static 'js/d3load.js' %}') 
+    //- |<script src="fisheye.js?0.0.3"></script>
