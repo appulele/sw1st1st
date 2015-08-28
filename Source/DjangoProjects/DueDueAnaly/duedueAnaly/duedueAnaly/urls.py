@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from analysys.views import analy,index
+from analysys.views import analy,index,getData
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^23', analy ,name="23"),
     url(r'^24', analy ,name="24"),
     url(r'^25', analy ,name="25"),
+    url(r'^getData', getData ,name="getData"),
 ]

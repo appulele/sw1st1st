@@ -32,8 +32,8 @@ jQuery(document).ready(function(){
    }); 
 });
 (function chart1() {
-  var width = 1000,
-      height = 1000;
+  var width = 300,
+      height = 300;
 
   var color = d3.scale.category20();
 
@@ -41,6 +41,16 @@ jQuery(document).ready(function(){
       //.radius(120);
 
   var force = d3.layout.force()
+      .size([width, height])
+    .linkStrength(0)
+    .friction(0.5)
+    .linkDistance(20)
+    .charge(0)
+    .gravity(0)
+    .theta(0.8)
+    .alpha(0.1);
+  
+  var force2 = d3.layout.force()
       .size([width, height])
     .linkStrength(0)
     .friction(0.5)
@@ -58,7 +68,6 @@ jQuery(document).ready(function(){
       .attr("class", "background")
       .attr("width", width)
       .attr("height", height);
-
   d3.json("static/json/data"+getParameter()+".json", function(data) {
     var n = data.nodes.length;
 
@@ -70,9 +79,10 @@ jQuery(document).ready(function(){
     // Initialize the positions deterministically, for better results.
     data.nodes.forEach(function(d, i) { 
         if(radius>1){
+      
             if(num<=radius*radius){
-                d.x=Math.cos(2*Math.PI/(radius*radius)*num)*radius*20+500;
-                d.y=Math.sin(2*Math.PI/(radius*radius)*num)*radius*20+500;
+                d.x=Math.cos(2*Math.PI/(radius*radius)*num)*(radius*10+30)+width/2;
+                d.y=Math.sin(2*Math.PI/(radius*radius)*num)*(radius*10+30)+height/2;
                 num++;
                 //alert(radius);
             }else{
@@ -117,7 +127,7 @@ jQuery(document).ready(function(){
         .attr("class", "node")
         .attr("cx", function(d) { return d.target.x; })
         .attr("cy", function(d) { return d.target.y; })
-        .attr("r", 4.5)
+        .attr("r", 2)
         .attr("onmouseenter",function(d) {return "mousePopUp('"+d.target.name+"#"+d.target.fb_img+"#"+d.target.email+"')"})
         .attr("onmouseleave","mousePopUphidden()")
         .style("fill", function(d) { return color(d.target.group); })
@@ -139,10 +149,10 @@ jQuery(document).ready(function(){
     });
   });
   
-   d3.json("static/json/data"+getParameter()+".json", function(data) {
+  d3.json("static/json/data"+getParameter()+".json", function(data) {
     var n = data.nodes.length;
 
-    force.nodes(data.nodes).links(data.links);
+    force2.nodes(data.nodes).links(data.links);
       
     var radius = 1;
     var num = 1;
@@ -151,8 +161,8 @@ jQuery(document).ready(function(){
     data.nodes.forEach(function(d, i) { 
         if(radius>1){
             //if(num<=radius*radius){
-                d.x=Math.cos(2*Math.PI/(4*4)*num)*radius*20+500;
-                d.y=Math.sin(2*Math.PI/(4*4)*num)*radius*20+500;
+                d.x=Math.cos(2*Math.PI/(10*10)*num)*(radius*10+30)+width/2;
+                d.y=Math.sin(2*Math.PI/(10*10)*num)*(radius*10+30)+height/2;
                 num++;
                 //alert(radius);
             //}else{
@@ -172,50 +182,31 @@ jQuery(document).ready(function(){
     // Run the layout a fixed number of times.
     // The ideal number of times scales with graph complexity.
     // Of course, don't run too long—you'll hang the page!
-    force.start();
-    for (var i = n; i > 0; --i) force.tick();
-    force.stop();
+    force2.start();
+    for (var i = n; i > 0; --i) force2.tick();
+    force2.stop();
 
    
     // Center the nodes in the middle.
     
-    var link = svg.selectAll(".link")
-        .data(data.links)
-      .enter().append("line")
-        .attr("class", "link")
-        .attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; })
-        .style("stroke-width", function(d) { return Math.sqrt(d.value); });
-
-    
-    
+   
      var node = svg.selectAll(".node")
         .data(data.nodes)
         .enter().append("circle")
         .attr("class", "node")
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
-        .attr("r", 4.5)
+        .attr("r", 2)
         .attr("onmouseenter",function(d) {return "mousePopUp('"+d.name+"#"+d.fb_img+"#"+d.email+"')"})
         .attr("onmouseleave","mousePopUphidden()")
         .style("fill", function(d) { return color(d.group); })
-        .call(force.drag);
+        .call(force2.drag);
  
 
-    svg.on("mousemove", function() {
-      fisheye.focus(d3.mouse(this));
-
-      node.each(function(d) { d.fisheye = fisheye(d); })
-          .attr("cx", function(d) { return d.target.fisheye.x; })
-          .attr("cy", function(d) { return d.fisheye.y; })
-          .attr("r", function(d) { return d.fisheye.z * 4.5; });
-
-      link.attr("x1", function(d) { return d.source.fisheye.x; })
-          .attr("y1", function(d) { return d.source.fisheye.y; })
-          .attr("x2", function(d) { return d.target.fisheye.x; })
-          .attr("y2", function(d) { return d.target.fisheye.y; });
-    });
+    
   });
+  
+   
+  
+  
 })();
